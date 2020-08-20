@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 
 class ListaTransacao extends StatelessWidget {
   final List<Transacao> transacoes;
-  ListaTransacao(this.transacoes);
+  final void Function (String) deletar;
+  ListaTransacao(this.transacoes, this.deletar);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,7 @@ class ListaTransacao extends StatelessWidget {
                 return Card(
                   color: Color(0xFFedeef2),
                   elevation: 5,
-                  margin: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5
-                  ),
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.white,
@@ -73,6 +71,11 @@ class ListaTransacao extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    trailing: IconButton(
+                      color: Colors.red,
+                      icon: Icon(Icons.delete),
+                      onPressed: () {deletar(tr.id);}
                     ),
                   ),
                 );

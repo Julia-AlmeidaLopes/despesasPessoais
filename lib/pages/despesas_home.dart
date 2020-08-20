@@ -13,14 +13,7 @@ class DespesasHome extends StatefulWidget {
 }
 
 class _DespesasHomeState extends State<DespesasHome> {
-  final List<Transacao> _transacoes = [
-    Transacao(
-        id: 't1', title: 'Calça jeans', valor: 80.00, data: DateTime.now().subtract(Duration(days: 3))),
-    Transacao(
-        id: 't2', title: 'Calça ', valor: 800.00, data: DateTime.now().subtract(Duration(days: 33))),
-    Transacao(
-        id: 't3', title: 'Conta de água', valor: 100.90, data: DateTime.now().subtract(Duration(days: 4)))
-  ];
+  final List<Transacao> _transacoes = [];
 
   List<Transacao> get _recenteTransacoes {
     return _transacoes.where((element){
@@ -29,12 +22,12 @@ class _DespesasHomeState extends State<DespesasHome> {
       ));
     }).toList();
   }
-  addTransacao(String title, double value) {
+  addTransacao(String title, double value, DateTime data) {
     final novaTransacao = Transacao(
       id: Random().nextDouble().toString(),
       title: title,
       valor: value,
-      data: DateTime.now(),
+      data: data,
     );
 
     setState(() {
@@ -42,6 +35,14 @@ class _DespesasHomeState extends State<DespesasHome> {
     });
 
     Navigator.of(context).pop();
+  }
+
+  deletarTransacao(String id){
+    setState(() {
+      _transacoes.removeWhere((tr) {
+        return tr.id == id;
+      });
+    });
   }
 
   _modalFormTransacao(BuildContext context) {
@@ -59,12 +60,15 @@ class _DespesasHomeState extends State<DespesasHome> {
       appBar: AppBar(
         backgroundColor: Color(0xFFff500f),
         title: Text("Despesas Pessoais ",
-        style: GoogleFonts.inter(),),
+        style: GoogleFonts.inter(
+          textStyle: TextStyle(color: Colors.white)
+        ),),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.add
+              Icons.add,
+              color: Colors.white,
             ),
             onPressed: () => _modalFormTransacao(context),
           )
@@ -75,7 +79,7 @@ class _DespesasHomeState extends State<DespesasHome> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recenteTransacoes),
-            ListaTransacao(_transacoes),
+            ListaTransacao(_transacoes, deletarTransacao),
           ],
         ),
       ),
@@ -83,6 +87,7 @@ class _DespesasHomeState extends State<DespesasHome> {
         backgroundColor: Color(0xFF8dc63f),
         child: Icon(
           Icons.add,
+          color: Colors.white,
         ),
         onPressed: () => _modalFormTransacao(context),
       ),

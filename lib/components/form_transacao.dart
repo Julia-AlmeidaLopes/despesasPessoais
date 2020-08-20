@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class FormTransacao extends StatefulWidget {
-  final void Function(String, double) onSubmit;
+  final void Function(String, double, DateTime) onSubmit;
 
   FormTransacao(this.onSubmit);
 
@@ -14,16 +14,16 @@ class FormTransacao extends StatefulWidget {
 class _FormTransacaoState extends State<FormTransacao> {
   final _titleController = TextEditingController();
   final _valorController = TextEditingController();
-  DateTime _dataselecionada;
+  DateTime _dataselecionada = DateTime.now();
 
   _submitForm() {
     final title = _titleController.text;
     final value = double.tryParse(_valorController.text) ?? 0.0;
 
-    if (title.isEmpty || value <= 0) {
+    if (title.isEmpty || value <= 0 || _dataselecionada == null) {
       return;
     }
-    widget.onSubmit(title, value);
+    widget.onSubmit(title, value, _dataselecionada);
   }
 
   _abrirDatePicker() {

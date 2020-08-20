@@ -49,7 +49,7 @@ class Chart extends StatelessWidget {
                 child: ChartBar(
                   label: tr['dia'],
                   valor: tr['valor'],
-                  percentual: (tr['valor'] as double) / _valorTotSemana,
+                  percentual: _valorTotSemana == 0 ? 0 : (tr['valor'] as double) / _valorTotSemana,
                 ),
               );
             }).toList()),
