@@ -14,7 +14,7 @@ class FormTransacao extends StatefulWidget {
 class _FormTransacaoState extends State<FormTransacao> {
   final _titleController = TextEditingController();
   final _valorController = TextEditingController();
-  DateTime _dataselecionada = DateTime.now();
+  DateTime _dataselecionada = DateTime.now(); 
 
   _submitForm() {
     final title = _titleController.text;

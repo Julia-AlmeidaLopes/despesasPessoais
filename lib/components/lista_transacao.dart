@@ -75,7 +75,7 @@ class ListaTransacao extends StatelessWidget {
                     trailing: IconButton(
                       color: Colors.red,
                       icon: Icon(Icons.delete),
-                      onPressed: () {deletar(tr.id);}
+                      onPressed: () {deletar(tr.id);}    
                     ),
                   ),
                 );
