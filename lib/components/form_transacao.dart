@@ -34,7 +34,7 @@ class _FormTransacaoState extends State<FormTransacao> {
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
-      if (pickedDate == null) {
+      if (pickedDate == null) { 
         return;
       }
       setState(() {
