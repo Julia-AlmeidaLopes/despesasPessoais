@@ -5,6 +5,7 @@ import 'package:despesas_pessoais/components/form_transacao.dart';
 import 'package:despesas_pessoais/components/lista_transacao.dart';
 import 'package:despesas_pessoais/models/transacao.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DespesasHome extends StatefulWidget {
@@ -16,12 +17,11 @@ class _DespesasHomeState extends State<DespesasHome> {
   final List<Transacao> _transacoes = [];
 
   List<Transacao> get _recenteTransacoes {
-    return _transacoes.where((element){
-      return element.data.isAfter(DateTime.now().subtract(
-        Duration(days: 7)
-      ));
+    return _transacoes.where((element) {
+      return element.data.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
+
   addTransacao(String title, double value, DateTime data) {
     final novaTransacao = Transacao(
       id: Random().nextDouble().toString(),
@@ -37,7 +37,7 @@ class _DespesasHomeState extends State<DespesasHome> {
     Navigator.of(context).pop();
   }
 
-  deletarTransacao(String id){
+  deletarTransacao(String id) {
     setState(() {
       _transacoes.removeWhere((tr) {
         return tr.id == id;
@@ -55,31 +55,60 @@ class _DespesasHomeState extends State<DespesasHome> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.portraitUp
+      ]
+    );
+
+    final appBar = AppBar(
+      backgroundColor: Color(0xFFff500f),
+      title: Text(
+        "Despesas Pessoais ",
+        style: GoogleFonts.inter(
+          textStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20 * MediaQuery.of(context).textScaleFactor
+          ),
+        ),
+      ),
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () => _modalFormTransacao(context),
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.list,
+            color: Colors.white,
+          ),
+          onPressed: (){},
+        )
+      ],
+    );
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: Color(0xFFf5f7fa),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFff500f),
-        title: Text("Despesas Pessoais ",
-        style: GoogleFonts.inter(
-          textStyle: TextStyle(color: Colors.white)
-        ),),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () => _modalFormTransacao(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recenteTransacoes),
-            ListaTransacao(_transacoes, deletarTransacao),
+            Container(
+              height: availableHeight * 0.30,
+              child: Chart(_recenteTransacoes),
+            ),
+            Container(
+              height: availableHeight * 0.70,
+              child: ListaTransacao(_transacoes, deletarTransacao),
+            ),
           ],
         ),
       ),
